@@ -1,0 +1,27 @@
+title: LP_Suspicious File Overwrite Using findstr Detected
+id: LP_Suspicious_File_Overwrite_findstr
+description: When suspicious actions such as credential access, file download, or creation of alternate data stream using findstr are detected. Generally, it is used to search for strings in files or to filter command line output. Adversaries can exploit it for defense evasion. However, general administrative use of findstr can trigger false positives.
+status: experimental
+author: sriram
+references:
+  - title: ATT&CK Framework
+    url: https://attack.mitre.org/
+logsource:
+  category: process_creation
+  product: windows
+  service: sysmon
+  
+detection:
+  selection:
+    EventID: 1
+    Image: '*\\findstr.exe'
+    CommandLine|contains:
+      - '/S'
+      - '/R'
+  condition: selection
+falsepositives:
+  - False positives may occur due to legitimate administrative use of findstr.
+level: medium
+tags:
+  
+  - attack. T1218
